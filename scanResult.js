@@ -1,56 +1,57 @@
-const RVZR_STATUS_COMPLETE = 'complete';
-    const RVZR_STATUS_INCOMPLETE = 'incomplete';
-    const RVZR_STATUS_ERROR = 'failed';
-    const RVZR_STATUS_CANCEL = 'canceled';
-    const RVZR_STATUS_QUEUED = 'queued';
-    
-    const RVZR_ERROR_STATUS_LIMIT_TASK = 'LIMIT_TASK';
-    
-    const RVZR_UA_MOBILE = 'UA_MOBILE';
-    const RVZR_UA_DESKTOP = 'UA_DESKTOP';
-    const RVZR_REF_SERP = 'REF_SERP';
-    const RVZR_REF_SUBPAGE = 'REF_SUBPAGE';
-    const RVZR_REF_SOCIAL = 'REF_SOCIAL';
-    
-    const RVZR_ADDED = 1;
-    const RVZR_REMOVED = -1;
-    
-    const RVZR_SCRIPT_URL = 'scriptUrls';
-    const RVZR_IFRAME_URL = 'iframes';
-    const RVZR_BACKGROUND_LOAD_URL = 'sideFrames';
-    const RVZR_OBJECT_URL = 'objects';
-    const RVZR_EXTERNAL_LINK_URL = 'exLinks';
-    const RVZR_EXTERNAL_RESOURCE_URL = 'externalResources';
-    const RVZR_LOAD_ERROR_URL = 'errorLoads';
-    const RVZR_PAGE_URL = 'page';
-
-    const RVZR_EXTERNAL_RESOURCE_OBJECT = 'objectsList';
-    const RVZR_EXTERNAL_RESOURCE_EMBED = 'embedsList';
-    const RVZR_EXTERNAL_RESOURCE_APPLET = 'appletsList';
-    const RVZR_EXTERNAL_RESOURCE = 'resourceList';
-    
-    const RVZR_BLACKLISTED_URL = 'blackurl';
-    const RVZR_SIGNATURE = 'signature';
-    
-    const RVZR_FAILED2CHECK = 'fail';
-
-    var status = '';
-    var strStatus = '';
-    var error_message = '';
-    var request_id = '';
-    var data = [];
-
+var status = '';
+var strStatus = '';
+var error_message = '';
+var request_id = '';
+var data = new Array();
 
 class ScanResult{
+
 	constructor(data)
     {
+         this.RVZR_STATUS_COMPLETE = 'complete';
+         this.RVZR_STATUS_INCOMPLETE = 'incomplete';
+         this.RVZR_STATUS_ERROR = 'failed';
+         this.RVZR_STATUS_CANCEL = 'canceled';
+         this.RVZR_STATUS_QUEUED = 'queued';
+        
+         this.RVZR_ERROR_STATUS_LIMIT_TASK = 'LIMIT_TASK';
+        
+         this.RVZR_UA_MOBILE = 'UA_MOBILE';
+         this.RVZR_UA_DESKTOP = 'UA_DESKTOP';
+         this.RVZR_REF_SERP = 'REF_SERP';
+         this.RVZR_REF_SUBPAGE = 'REF_SUBPAGE';
+         this.RVZR_REF_SOCIAL = 'REF_SOCIAL';
+        
+         this.RVZR_ADDED = 1;
+         this.RVZR_REMOVED = -1;
+        
+         this.RVZR_SCRIPT_URL = 'scriptUrls';
+         this.RVZR_IFRAME_URL = 'iframes';
+         this.RVZR_BACKGROUND_LOAD_URL = 'sideFrames';
+         this.RVZR_OBJECT_URL = 'objects';
+         this.RVZR_EXTERNAL_LINK_URL = 'exLinks';
+         this.RVZR_EXTERNAL_RESOURCE_URL = 'externalResources';
+         this.RVZR_LOAD_ERROR_URL = 'errorLoads';
+         this.RVZR_PAGE_URL = 'page';
+
+         this.RVZR_EXTERNAL_RESOURCE_OBJECT = 'objectsList';
+         this.RVZR_EXTERNAL_RESOURCE_EMBED = 'embedsList';
+         this.RVZR_EXTERNAL_RESOURCE_APPLET = 'appletsList';
+         this.RVZR_EXTERNAL_RESOURCE = 'resourceList';
+        
+         this.RVZR_BLACKLISTED_URL = 'blackurl';
+         this.RVZR_SIGNATURE = 'signature';
+        
+         this.RVZR_FAILED2CHECK = 'fail';
+         console.log(data);
+       
     	if(!(Array.isArray(data))){
-    		this.status = RVZR_STATUS_ERROR;
+    		this.status = this.RVZR_STATUS_ERROR;
             this.error_message = 'Revizorro server not response';
             return;
     	}
     	if(data['response_code']){
-    		this.status = RVZR_STATUS_ERROR;
+    		this.status = this.RVZR_STATUS_ERROR;
             this.error_message = data['response_text'] ? data['response_text'] : '';
             return;
     	}
@@ -58,11 +59,11 @@ class ScanResult{
             this.request_id = data['request_id'];
         }
         var status_array = [];
-        status_array["RVZR_STATUS_COMPLETE"] = RVZR_STATUS_COMPLETE;
-        status_array["RVZR_STATUS_INCOMPLETE"] = RVZR_STATUS_INCOMPLETE;
-        status_array["RVZR_STATUS_QUEUED"] = RVZR_STATUS_QUEUED;
-        status_array["RVZR_STATUS_CANCEL"] = RVZR_STATUS_CANCEL;
-        status_array["RVZR_STATUS_ERROR"] = RVZR_STATUS_ERROR;
+        status_array["RVZR_STATUS_COMPLETE"] = this.RVZR_STATUS_COMPLETE;
+        status_array["RVZR_STATUS_INCOMPLETE"] = this.RVZR_STATUS_INCOMPLETE;
+        status_array["RVZR_STATUS_QUEUED"] = this.RVZR_STATUS_QUEUED;
+        status_array["RVZR_STATUS_CANCEL"] = this.RVZR_STATUS_CANCEL;
+        status_array["RVZR_STATUS_ERROR"] = this.RVZR_STATUS_ERROR;
         var n = status_array.indexOf(data['status']);
         if((data['status'] && n !=-1)) {
             this.status = data['status'];
@@ -71,9 +72,9 @@ class ScanResult{
             this.data = data;
         }
         else {
-            this.status = RVZR_STATUS_ERROR;
+            this.status = this.RVZR_STATUS_ERROR;
         }
-        if (this.status === RVZR_STATUS_COMPLETE) {
+        if (this.status === this.RVZR_STATUS_COMPLETE) {
             this.data = data;
         }
     }
@@ -176,21 +177,23 @@ class ScanResult{
 
     
     getIP() {
-        if (this.data['misc']['ip']) {
+        if (typeof this.data === 'undefined') {
             return false;
+        }else{
+            return this.data['misc']['ip'];
         }
-        return this.data['misc']['ip'];
+        
     }
     
     getDNS() {
-        if (this.data['misc']['dns']) {
+        if (typeof this.data === 'undefined') {
             return false;
         }
         return this.data['misc']['dns'];
     }
     
     getCMS() {
-        if (this.data['misc']['cms']) {
+        if (typeof this.data === 'undefined') {
             return false;
         }
         return this.data['misc']['cms'];
@@ -199,24 +202,31 @@ class ScanResult{
     
     cachedResult()
     {
-        if (this.data['cached_result'] && this.data['cached_result']) {
-            return true;
+        if (typeof this.data !== 'undefined' && this.data!== 'undefined') {
+            if (typeof this.data['cached_result'] !== 'undefined' && this.data['cached_result']) {
+              return true;
+            }
         }
+        
         return false;
     }
 
     cacheCreateTime()
     {
-        if (this.data['cache_create_time']) {
-            return this.data['cache_create_time'];
+        if (typeof this.data !== 'undefined') {
+            if (this.data['cache_create_time']) {
+                return this.data['cache_create_time'];
+            }
         }
         return 0;
     }
 
     masterCopyCacheCreateTime()
     {
-        if (this.data['master_copy_cache_create_time']) {
-            return this.data['master_copy_cache_create_time'];
+        if (typeof this.data !== 'undefined') {
+            if (this.data['master_copy_cache_create_time']) {
+                return this.data['master_copy_cache_create_time'];
+            }
         }
         return 0;
     }
@@ -225,16 +235,18 @@ class ScanResult{
 
    getResponseErrors()
     {
-        if (this.data['result']['page_response_errors']) {
-            return new array();
+        if (typeof this.data === 'undefined') {
+            return new Array();
         }
         return this.data['result']['page_response_errors'];
     }
 
     gotBlacklisted()
     {
-        if (this.data['result']['blacklisted'] && (this.data['result']['blacklisted']).length()) {
-            return true;
+        if (typeof this.data !== 'undefined') {
+            if (this.data['result']['blacklisted'] !== 'undefined' && (this.data['result']['blacklisted']).length()) {
+                return true;
+            }
         }
         return false;
     }
@@ -249,15 +261,17 @@ class ScanResult{
 
     getMalwareInHTML()
     {
-        if (!(this.data['result']['html_malware'])) {
-            return new Array();
+         if (typeof this.data === 'undefined') {
+                return new Array();
+        }else{
+            return this.data['result']['html_malware'];
         }
-        return this.data['result']['html_malware'];
+        
     }
 
     getMalwareInFiles()
     {
-        if (!(this.data['result']['files_malware'])) {
+        if (typeof this.data === 'undefined') {
             return new Array();
         }
         return this.data['result']['files_malware'];
@@ -265,7 +279,7 @@ class ScanResult{
 
     getBlacklistedUrls()
     {
-        if (!(this.data['result']['blacklisted_urls'])) {
+        if (typeof this.data === 'undefined') {
             return new Array();
         }
         return this.data['result']['blacklisted_urls'];
@@ -273,7 +287,7 @@ class ScanResult{
 
     hasRedirect()
     {
-        if ((this.data['result']['redirects']) && (this.data['result']['redirects']).length()) {
+        if ((typeof this.data !=='undefined')) {
             return true;
         }
         return false;
@@ -330,10 +344,13 @@ class ScanResult{
     
     isDiff()
     {
-        if (!(this.data['result']['diff'])) {
-            return array();
+        if (typeof this.data !== 'undefined') {
+            if (!(this.data['result']['diff'])) {
+                return array();
+            }
+            return this.data['result']['diff'];
         }
-        return this.data['result']['diff'];
+        
     }
     
     getMonitoring()
